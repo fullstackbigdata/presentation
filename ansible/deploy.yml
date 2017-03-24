@@ -1,0 +1,9 @@
+# ./ansible/deploy.yml
+
+- hosts: nifi
+  tasks:
+    - include: 'tasks/nifi.yml'
+
+- hosts: docker
+  tasks:
+    - include: 'tasks/docker.yml'

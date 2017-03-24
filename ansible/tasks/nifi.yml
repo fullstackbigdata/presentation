@@ -1,0 +1,23 @@
+# ./ansible/tasks/nifi.yml
+
+- name: NiFi | Fetching NiFi (1.1.2.) zip from Apache
+  get_url:
+    url: http://www.gtlib.gatech.edu/pub/apache/nifi/1.1.2/nifi-1.1.2-bin.tar.gz
+    dest: /home/ec2-user/
+    mode: 0440
+
+- name: NiFi | Unzipping Nifi-1.1.2-bin.zip
+  unarchive:
+    src: /home/ec2-user/nifi-1.1.2-bin.zip
+    dest: /home/ec2-user
+  become: true
+
+- name: NiFi | Installing NiFi as a service
+  command: /home/ec2-user/nifi-1.1.2 install nifi
+  become: true
+
+- name: NiFi | Starting NiFi
+  service:
+    name: nifi
+    state: started
+  become: true

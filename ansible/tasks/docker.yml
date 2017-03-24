@@ -1,0 +1,35 @@
+# ./ansible/tasks/docker.yml
+
+- name: Docker | Installing docker server (latest) via yum
+  yum:
+    name: docker
+    state: latest
+  become: true
+
+- name: Docker | Installing docker-py (latest) via pip
+  pip:
+    name: docker
+  become: true
+
+- name: Docker | Pull Elasticsearch imagine
+  docker_image:
+    name: elasticsearch
+
+- name: Docker | Pull Kibana imagine
+  docker_image:
+    name: kibana
+
+- name: Docker | Launching Elasticsearch container
+  docker_container:
+    name: elasticsearch
+    image: elasticsearch
+    expose:
+    - 9200
+
+- name: Kibana | Launching Kibana container
+  docker_container:
+    name: kibana
+    image: kibana
+    command: --link elasticsearch:elasticsearch -d kibana
+    expose:
+    - 5601

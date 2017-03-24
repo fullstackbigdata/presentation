@@ -1,0 +1,33 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "dummy"
+
+  config.vm.define "elastic" do |config_elastic|
+    config_elastic.vm.provider :aws do |elastic, override|
+      elastic.keypair_name = "demo"
+      elastic.ami = "ami-0b33d91d"
+      elastic.elastic_ip = "34.204.25.180"
+      elastic.instance_type = "m4.large"
+      elastic.tags = {
+        'Name' => 'ELK'
+      }
+      override.ssh.username = "ec2-user"
+      override.ssh.private_key_path = "/home/ec2-user/demo.pem"
+    end
+  end
+  config.vm.define "nifi" do |config_nifi|
+    config_nifi.vm.provider :aws do |nifi, override|
+      nifi.keypair_name = "demo"
+      nifi.ami = "ami-0b33d91d"
+      nifi.elastic_ip = "34.204.25.191"
+      nifi.instance_type = "t2.small"
+      nifi.tags = {
+        'Name' => 'NiFi'
+      }
+      override.ssh.username = "ec2-user"
+      override.ssh.private_key_path = "/home/ec2-user/demo.pem"
+    end
+  end
+end

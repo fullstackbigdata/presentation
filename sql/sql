@@ -1,0 +1,30 @@
+%sql
+CREATE EXTERNAL TABLE IF NOT EXISTS `daily_stock_data`(
+  `ticker` STRING,
+  `date` DATE,
+  `open` DECIMAL,
+  `high` DECIMAL,
+  `low` DECIMAL,
+  `close` DECIMAL,
+  `volume` DECIMAL,
+  `ex-dividend` DECIMAL,
+  `split` DECIMAL,
+  `ratio` DECIMAL,
+  `adjusted_open` DECIMAL,
+  `adjusted_high` DECIMAL,
+  `adjusted_low` DECIMAL,
+  `adjusted_close` DECIMAL,
+  `adjusted_volume` DECIMAL)
+ROW FORMAT DELIMITED
+  FIELDS TERMINATED BY ','
+LOCATION
+  's3://amazonaws.com/kpmg-interview-demo/stock-data.csv'
+
+  %sql
+SELECT * FROM daily_stock_data where ticker="BAH" LIMIT 1000000
+
+%sql
+SELECT *,high-low AS DIFFERENCE FROM daily_stock_data where ticker="BAH" AND date>'2016-01-01' LIMIT 1000
+
+%sql
+SELECT * FROM daily_stock_data where ticker="BAH" AND date>'2013-01-01' LIMIT 10000
